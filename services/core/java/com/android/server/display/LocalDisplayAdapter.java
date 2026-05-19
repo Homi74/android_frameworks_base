@@ -64,7 +64,6 @@ import com.android.server.display.notifications.DisplayNotificationManager;
 import com.android.server.lights.LightsManager;
 import com.android.server.lights.LogicalLight;
 
-import vendor.samsung.hardware.sysinput.V1_1.ISehSysInputDev;
 
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -261,7 +260,7 @@ final class LocalDisplayAdapter extends DisplayAdapter {
         private DisplayEventReceiver.FrameRateOverride[] mFrameRateOverrides =
                 new DisplayEventReceiver.FrameRateOverride[0];
         private boolean triedSamsungHal = false;
-        private ISehSysInputDev samsungSysinput = null;
+        private Object samsungSysinput = null;
 
         LocalDisplayDevice(IBinder displayToken, long physicalDisplayId,
                 SurfaceControl.StaticDisplayInfo staticDisplayInfo,
@@ -968,7 +967,7 @@ final class LocalDisplayAdapter extends DisplayAdapter {
                         if (!triedSamsungHal) {
                             triedSamsungHal = true;
                             try {
-                                samsungSysinput = ISehSysInputDev.getService();
+                                samsungSysinput = null; // TB-J616X: Samsung HAL not available
                             } catch(Throwable t) {}
                         }
                         final int mode = getPowerModeForState(state);
@@ -979,7 +978,7 @@ final class LocalDisplayAdapter extends DisplayAdapter {
                         if (samsungSysinput != null) {
                             try {
                                 Log.d("PHH", "setTspEnable 1, " + state + ", true");
-                                samsungSysinput.setTspEnable(1, state, true);
+                                // TB-J616X disabled: samsungSysinput.setTspEnable(1, state, true);
                             } catch(Throwable t) {
                                 Log.d("PHH", "Failed settings tsp enable", t);
                             }
@@ -998,7 +997,7 @@ final class LocalDisplayAdapter extends DisplayAdapter {
                         if (samsungSysinput != null) {
                             try {
                                 Log.d("PHH", "setTspEnable 1, " + state + ", false");
-                                samsungSysinput.setTspEnable(1, state, false);
+                                // TB-J616X disabled: samsungSysinput.setTspEnable(1, state, false);
                             } catch(Throwable t) {
                                 Log.d("PHH", "Failed settings tsp enable", t);
                             }
