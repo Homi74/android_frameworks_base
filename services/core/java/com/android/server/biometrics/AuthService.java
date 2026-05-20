@@ -98,13 +98,6 @@ import java.io.PrintWriter;
 import android.os.FileObserver;
 import android.os.Build;
 
-import vendor.samsung.hardware.biometrics.fingerprint.V3_0.ISehBiometricsFingerprint;
-import vendor.goodix.hardware.biometrics.fingerprint.V2_1.IGoodixFingerprintDaemon;
-import vendor.samsung.hardware.sysinput.V1_0.ISehSysInputDev;
-import vendor.samsung.hardware.biometrics.fingerprint.ISehFingerprint;
-
-import vendor.xiaomi.hardware.fingerprintextension.V1_0.IXiaomiFingerprint;
-
 /**
  * System service that provides an interface for authenticating with biometrics and
  * PIN/pattern/password to BiometricPrompt and lock screen.
@@ -124,11 +117,11 @@ public class AuthService extends SystemService {
     final IAuthService.Stub mImpl;
 
     private FileObserver fodFileObserver = null;
-    private static ISehBiometricsFingerprint mSamsungFingerprint = null;
-    private ISehFingerprint mSamsungFingerprintAidl = null;
-    private vendor.samsung.hardware.sysinput.ISehSysInputDev mSamsungSysinputAidl = null;
+    private static Object mSamsungFingerprint = null;
+    private Object mSamsungFingerprintAidl = null;
+    private Object mSamsungSysinputAidl = null;
 
-    private IXiaomiFingerprint mXiaomiFingerprint = null;
+    private Object mXiaomiFingerprint = null;
 
     /**
      * Class for injecting dependencies into AuthService.
@@ -878,9 +871,9 @@ public class AuthService extends SystemService {
         try {
             android.util.Log.e("PHH-Enroll", "SysinputCommand " + arg);
             var name = "default";
-            var fqName = vendor.samsung.hardware.sysinput.ISehSysInputDev.DESCRIPTOR + "/" + name;
+            // TB-J616X disabled: var fqName = vendor.samsung.hardware.sysinput.ISehSysInputDev.DESCRIPTOR + "/" + name;
             var b = android.os.Binder.allowBlocking(android.os.ServiceManager.waitForDeclaredService(fqName));
-            var samsungSysinputAidl = vendor.samsung.hardware.sysinput.ISehSysInputDev.Stub.asInterface(b);
+            // TB-J616X disabled: var samsungSysinputAidl = vendor.samsung.hardware.sysinput.ISehSysInputDev.Stub.asInterface(b);
             Thread.sleep(100);
             samsungSysinputAidl.setProperty(1 /*DEFAULT_TSP*/, 18, arg);
             android.util.Log.e("PHH-Enroll", "Done SysinputCommand");
@@ -891,7 +884,7 @@ public class AuthService extends SystemService {
 
     private void refreshVendorServices() {
         try {
-            mSamsungFingerprint = ISehBiometricsFingerprint.getService();
+            // TB-J616X disabled: mSamsungFingerprint = ISehBiometricsFingerprint.getService();
             android.util.Log.e("PHH", "Got samsung fingerprint HAL");
         } catch(Exception e) {
             if (e instanceof java.util.NoSuchElementException) {
@@ -906,16 +899,16 @@ public class AuthService extends SystemService {
             final String fqName = IFingerprint.DESCRIPTOR + "/" + name;
             final IBinder fpBinder = Binder.allowBlocking(ServiceManager.waitForDeclaredService(fqName));
             //final IFingerprint fp = IFingerprint.Stub.asInterface(fpBinder);
-            mSamsungFingerprintAidl = ISehFingerprint.Stub.asInterface(fpBinder.getExtension());
+            // TB-J616X disabled: mSamsungFingerprintAidl = ISehFingerprint.Stub.asInterface(fpBinder.getExtension());
         } catch(Exception e) {
             android.util.Log.e("PHH", "Failed getting Samsung fingerprint AIDL HAL", e);
         }
 
         try {
             final String name = "default";
-            final String fqName = vendor.samsung.hardware.sysinput.ISehSysInputDev.DESCRIPTOR + "/" + name;
+            // TB-J616X disabled: final String fqName = vendor.samsung.hardware.sysinput.ISehSysInputDev.DESCRIPTOR + "/" + name;
             final IBinder b = Binder.allowBlocking(ServiceManager.waitForDeclaredService(fqName));
-            mSamsungSysinputAidl = vendor.samsung.hardware.sysinput.ISehSysInputDev.Stub.asInterface(b);
+            // TB-J616X disabled: mSamsungSysinputAidl = vendor.samsung.hardware.sysinput.ISehSysInputDev.Stub.asInterface(b);
             mSamsungSysinputAidl.registerCallback(new vendor.samsung.hardware.sysinput.ISehSysInputCallback.Stub() {
                 @Override
                 public void onReportInformation(int type, String data) {
@@ -957,7 +950,7 @@ public class AuthService extends SystemService {
         }
 
         try {
-            mXiaomiFingerprint = IXiaomiFingerprint.getService();
+            // TB-J616X disabled: mXiaomiFingerprint = IXiaomiFingerprint.getService();
             android.util.Log.e("PHH", "Got xiaomi fingerprint HAL");
         } catch(Exception e) {
             if (e instanceof java.util.NoSuchElementException) {
@@ -1035,7 +1028,7 @@ public class AuthService extends SystemService {
                     if("1".equals(spotOn)) {
                         if(!wasOn) {
                             try {
-                                IGoodixFingerprintDaemon goodixDaemon = IGoodixFingerprintDaemon.getService();
+                                // TB-J616X: vendor disabled - IGoodixFingerprintDaemon goodixDaemon = IGoodixFingerprintDaemon.getService();
 
                                 //Send UI ready
                                 goodixDaemon.sendCommand(200002, new java.util.ArrayList<Byte>(), (returnCode, resultData) -> {
@@ -1407,7 +1400,7 @@ public class AuthService extends SystemService {
 
         if(readFile("/sys/class/fingerprint/fingerprint/position") != null) {
             try {
-            ISehSysInputDev s = ISehSysInputDev.getService();
+            // TB-J616X disabled: ISehSysInputDev s = ISehSysInputDev.getService();
             s.getTspFodInformation(0, (a, b) -> {
                 Slog.d("PHH-Enroll", "TspFod info " + a + ", " + b);
             });
@@ -1446,8 +1439,8 @@ public class AuthService extends SystemService {
             udfpsProps[2] = (int)mW;
 
             try {
-                ISehBiometricsFingerprint samsungFingerprint = null;
-                samsungFingerprint = ISehBiometricsFingerprint.getService();
+                // TB-J616X: vendor disabled - ISehBiometricsFingerprint samsungFingerprint = null;
+                // TB-J616X disabled: samsungFingerprint = ISehBiometricsFingerprint.getService();
                 Slog.d("PHH-Enroll", "Samsung ask for sensor status");
                 samsungFingerprint.sehRequest(6, 0, new java.util.ArrayList(), (int retval, java.util.ArrayList<Byte> out) -> {
                     Slog.d("PHH-Enroll", "Result is " + retval);
@@ -1476,7 +1469,7 @@ public class AuthService extends SystemService {
                 final String fqName = IFingerprint.DESCRIPTOR + "/" + name;
                 final IBinder fpBinder = Binder.allowBlocking(ServiceManager.waitForDeclaredService(fqName));
                 final IFingerprint fp = IFingerprint.Stub.asInterface(fpBinder);
-                final ISehFingerprint fpaidl = ISehFingerprint.Stub.asInterface(fpBinder.getExtension());
+                // TB-J616X disabled: final ISehFingerprint fpaidl = ISehFingerprint.Stub.asInterface(fpBinder.getExtension());
 
                 Slog.d("PHH-Enroll", "Samsung ask for sensor status");
                 vendor.samsung.hardware.biometrics.fingerprint.SehResult sehres = fpaidl.sehRequest(0, 6, 0, new byte[0]);

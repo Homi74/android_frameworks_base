@@ -56,8 +56,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 
-import vendor.samsung.hardware.light.ISehLights;
-
 public class LightsService extends SystemService {
     static final String TAG = "LightsService";
     static final boolean DEBUG = false;
@@ -69,7 +67,7 @@ public class LightsService extends SystemService {
     private final Supplier<ILights> mVintfLights;
 
     @Nullable
-    private ISehLights mSamsungLights;
+    private Object mSamsungLights;
     private int mSamsungMaxBrightness;
 
     @VisibleForTesting
@@ -561,7 +559,7 @@ public class LightsService extends SystemService {
 
         if (service.get() != null) {
             try {
-                mSamsungLights = ISehLights.Stub.asInterface(service.get().asBinder().getExtension());
+                // TB-J616X: vendor disabled - mSamsungLights = ISehLights.Stub.asInterface(service.get().asBinder().getExtension());
                 mSamsungMaxBrightness = 510;
 
                 ArrayList<File> paths = new ArrayList<>();
