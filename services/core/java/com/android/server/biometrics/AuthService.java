@@ -871,11 +871,12 @@ public class AuthService extends SystemService {
         try {
             android.util.Log.e("PHH-Enroll", "SysinputCommand " + arg);
             var name = "default";
+            String fqName = null;  // TB-J616X stub
             // TB-J616X disabled: var fqName = vendor.samsung.hardware.sysinput.ISehSysInputDev.DESCRIPTOR + "/" + name;
             var b = android.os.Binder.allowBlocking(android.os.ServiceManager.waitForDeclaredService(fqName));
             // TB-J616X disabled: var samsungSysinputAidl = vendor.samsung.hardware.sysinput.ISehSysInputDev.Stub.asInterface(b);
             Thread.sleep(100);
-            samsungSysinputAidl.setProperty(1 /*DEFAULT_TSP*/, 18, arg);
+            // TB-J616X disabled: samsungSysinputAidl.setProperty(1 /*DEFAULT_TSP*/, 18, arg);
             android.util.Log.e("PHH-Enroll", "Done SysinputCommand");
         } catch(Throwable t) {
             android.util.Log.e("PHH-Enroll", "SysinputCommand", t);
@@ -906,29 +907,28 @@ public class AuthService extends SystemService {
 
         try {
             final String name = "default";
+            final String fqName = null;  // TB-J616X stub
             // TB-J616X disabled: final String fqName = vendor.samsung.hardware.sysinput.ISehSysInputDev.DESCRIPTOR + "/" + name;
             final IBinder b = Binder.allowBlocking(ServiceManager.waitForDeclaredService(fqName));
             // TB-J616X disabled: mSamsungSysinputAidl = vendor.samsung.hardware.sysinput.ISehSysInputDev.Stub.asInterface(b);
             // TB-J616X disabled: mSamsungSysinputAidl.registerCallback(new vendor.samsung.hardware.sysinput.ISehSysInputCallback.Stub() {
-                @Override
-                public void onReportInformation(int type, String data) {
-                    android.util.Log.e("PHH", "Received Sysinput Report Information " +type + ", " + data);
-                }
-                @Override
-                public void onReportRawData(int type, int count, int[] data) {
-                    android.util.Log.e("PHH", "Received Sysinput Report RawData " + type + ", " + count);
-                }
-
-                @Override
-                public int getInterfaceVersion() {
-                    return this.VERSION;
-                }
-
-                @Override
-                public String getInterfaceHash() {
-                    return this.HASH;
-                }
-            });
+                // TB-J616X disabled: @Override
+                // TB-J616X disabled: public void onReportInformation(int type, String data) {
+                    // TB-J616X disabled: android.util.Log.e("PHH", "Received Sysinput Report Information " +type + ", " + data);
+                // TB-J616X disabled: }
+                // TB-J616X disabled: @Override
+                // TB-J616X disabled: public void onReportRawData(int type, int count, int[] data) {
+                    // TB-J616X disabled: android.util.Log.e("PHH", "Received Sysinput Report RawData " + type + ", " + count);
+                // TB-J616X disabled: }
+ // TB-J616X disabled:                 // TB-J616X disabled: @Override
+                // TB-J616X disabled: public int getInterfaceVersion() {
+                    // TB-J616X disabled: return this.VERSION;
+                // TB-J616X disabled: }
+ // TB-J616X disabled:                 // TB-J616X disabled: @Override
+                // TB-J616X disabled: public String getInterfaceHash() {
+                    // TB-J616X disabled: return this.HASH;
+                // TB-J616X disabled: }
+            // TB-J616X disabled: });
             String res = null;
             // TB-J616X disabled: res = mSamsungSysinputAidl.getProperty(1, 1);
             Thread.sleep(100);
