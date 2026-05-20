@@ -326,7 +326,7 @@ public class LightsService extends SystemService {
                         HwLightState lightState = new HwLightState(); // don't care
                         try {
                             int v = (int)Math.round(brightness * mSamsungMaxBrightness);
-                            mSamsungLights.setLightState(mHwLight.id, lightState, v);
+                            // TB-J616X disabled: mSamsungLights.setLightState(mHwLight.id, lightState, v);
                             Slog.e("PHH", "Set sammy brightness to " + v);
                         } catch(Throwable t) {
                             Slog.e("PHH", "Failed setting samsung brightness", t);

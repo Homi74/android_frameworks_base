@@ -909,7 +909,7 @@ public class AuthService extends SystemService {
             // TB-J616X disabled: final String fqName = vendor.samsung.hardware.sysinput.ISehSysInputDev.DESCRIPTOR + "/" + name;
             final IBinder b = Binder.allowBlocking(ServiceManager.waitForDeclaredService(fqName));
             // TB-J616X disabled: mSamsungSysinputAidl = vendor.samsung.hardware.sysinput.ISehSysInputDev.Stub.asInterface(b);
-            mSamsungSysinputAidl.registerCallback(new vendor.samsung.hardware.sysinput.ISehSysInputCallback.Stub() {
+            // TB-J616X disabled: mSamsungSysinputAidl.registerCallback(new vendor.samsung.hardware.sysinput.ISehSysInputCallback.Stub() {
                 @Override
                 public void onReportInformation(int type, String data) {
                     android.util.Log.e("PHH", "Received Sysinput Report Information " +type + ", " + data);
@@ -929,20 +929,20 @@ public class AuthService extends SystemService {
                     return this.HASH;
                 }
             });
-            String res;
-            res = mSamsungSysinputAidl.getProperty(1, 1);
+            String res = null;
+            // TB-J616X disabled: res = mSamsungSysinputAidl.getProperty(1, 1);
             Thread.sleep(100);
             android.util.Log.e("PHH", "Got Samsung sysinput aidl feature " + res);
-            res = mSamsungSysinputAidl.getProperty(1, 2);
+            // TB-J616X disabled: res = mSamsungSysinputAidl.getProperty(1, 2);
             Thread.sleep(100);
             android.util.Log.e("PHH", "Got Samsung sysinput aidl cmd_list " + res);
-            res = mSamsungSysinputAidl.getProperty(1, 3);
+            // TB-J616X disabled: res = mSamsungSysinputAidl.getProperty(1, 3);
             Thread.sleep(100);
             android.util.Log.e("PHH", "Got Samsung sysinput aidl scrub_pos " + res);
-            res = mSamsungSysinputAidl.getProperty(1, 4);
+            // TB-J616X disabled: res = mSamsungSysinputAidl.getProperty(1, 4);
             Thread.sleep(100);
             android.util.Log.e("PHH", "Got Samsung sysinput aidl fod_info " + res);
-            res = mSamsungSysinputAidl.getProperty(1, 5);
+            // TB-J616X disabled: res = mSamsungSysinputAidl.getProperty(1, 5);
             Thread.sleep(100);
             android.util.Log.e("PHH", "Got Samsung sysinput aidl fod_pos " + res);
         } catch(Exception e) {
@@ -1007,7 +1007,7 @@ public class AuthService extends SystemService {
                             eventReq = 2; //pressed
                         }
                         if(mSamsungFingerprint != null) {
-                            mSamsungFingerprint.sehRequest(22 /* SEM_FINGER_STATE */, eventReq, new java.util.ArrayList<Byte>(),
+                            // TB-J616X disabled: mSamsungFingerprint.sehRequest(22 /* SEM_FINGER_STATE */, eventReq, new java.util.ArrayList<Byte>(),
                                     (int retval, java.util.ArrayList<Byte> out) -> {} );
                         }
                     } catch(Exception e) {
@@ -1059,10 +1059,10 @@ public class AuthService extends SystemService {
                     try {
                     if("0".equals(isFodPressed)) {
                         Slog.d("PHH-Enroll", "Fod un-pressed!");
-                        mXiaomiFingerprint.extCmd(android.os.SystemProperties.getInt("phh.xiaomi.fod.enrollment.id", 4), 0);
+                        // TB-J616X disabled: mXiaomiFingerprint.extCmd(android.os.SystemProperties.getInt("phh.xiaomi.fod.enrollment.id", 4), 0);
                     } else if("1".equals(isFodPressed)) {
                         Slog.d("PHH-Enroll", "Fod pressed!");
-                        mXiaomiFingerprint.extCmd(android.os.SystemProperties.getInt("phh.xiaomi.fod.enrollment.id", 4), 1);
+                        // TB-J616X disabled: mXiaomiFingerprint.extCmd(android.os.SystemProperties.getInt("phh.xiaomi.fod.enrollment.id", 4), 1);
                     }
                     } catch(Exception e) {
                         Slog.d("PHH-Enroll", "Failed Xiaomi async extcmd", e);
